@@ -24,6 +24,9 @@
     "good": "^6.4.0",
     "good-console": "^5.2.0",
     "hapi": "^12.1.0",
-    "inert": "^3.2.0"
+    "hapi-sequelize": "^2.2.4",
+    "inert": "^3.2.0",
+    "mysql": "^2.10.2",
+    "sequelize": "^3.17.3"
   }
 }
