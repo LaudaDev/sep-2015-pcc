@@ -1,0 +1,26 @@
+{
+  "name": "sep-pcc",
+  "version": "0.0.1",
+  "description": "SEP 2015 (Uni Project) Payment Card Center REST Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaudaDev/sep-pcc.git"
+  },
+  "keywords": [
+    "sep",
+    "pcc"
+  ],
+  "author": "Goran Todorovic (Lauda)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LaudaDev/sep-pcc/issues"
+  },
+  "homepage": "https://github.com/LaudaDev/sep-pcc#readme",
+  "dependencies": {
+    "hapi": "^12.1.0"
+  }
+}
