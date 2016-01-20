@@ -1,22 +1,28 @@
 // SEP PCC 2015
+'use strict';
 
 var Hapi = require('hapi');
 
-// Create a server with a localhost and port 8080
-var server = new Hapi.Server();
+// Create a server with a host and port
+const server = new Hapi.Server();
 server.connection({ 
-  host: '0.0.0.0', 
-  port: process.env.PORT || 8080
+    host: 'localhost', 
+    port: 8000 
 });
 
+// Add the route
 server.route({
-  method: 'GET',
-  path:'/', 
-  handler: function (request, reply) {
-    reply('Hi, testing! :)');
-  }
+    method: 'GET',
+    path:'/hi', 
+    handler: function (request, reply) {
+        return reply('Hi! Testing! :)');
+    }
 });
 
-server.start(function () {
-  console.log('Server running at:', server.info.uri);
+// Start the server
+server.start((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Server running at:', server.info.uri);
 });
