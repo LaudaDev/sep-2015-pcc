@@ -27,7 +27,7 @@ build/Release
 node_modules
 
 #Config
-config.json
+src/config/config.json
 
 # Optional npm cache directory
 .npm
