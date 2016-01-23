@@ -8,16 +8,14 @@ var config = require('./src/config/config.json');
 var routes = require('./src/routes/routes.js');
 var plugins = require('./src/plugins/plugins.js');
 
-
 const server = new Hapi.Server();
-
 
 server.connection({
 	host: config.server.hostname,
 	port: config.server.https_port,
 	tls: {
-		key: fs.readFileSync(path.join(__dirname, "src/config/key/key.pem"), 'utf8'),
-		cert: fs.readFileSync(path.join(__dirname, "src/config/key/cert.pem"), 'utf8')
+		key: fs.readFileSync(path.join(__dirname, config.https.key), 'utf8'),
+		cert: fs.readFileSync(path.join(__dirname, config.https.cert), 'utf8')
 	},
 	labels: 'https'
 });
@@ -34,15 +32,24 @@ module.exports = server;
 // Main setup
 var setup = function(done) {
 
-	//Register all plugins/utils
+	// Register all plugins
 	server.register(plugins, function (err) {
 		if (err) {
-			throw err; // Something bad happened while loading a plugin
+			throw err; // Something bad happened while loading plugins
 		}
 	});
 
   // Add the server routes
   server.route(routes);
+
+	// Redirect all http requests to https connection
+	server.select('http').route({
+		method: '*',
+		path: '/{p*}',
+		handler: function (request, reply) {
+			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
+		}
+	});
 
 };
 // Start the server
