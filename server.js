@@ -30,8 +30,7 @@ server.connection({
 module.exports = server;
 
 // Main setup
-var setup = function(done) {
-
+var setup = function() {
 	// Register all plugins
 	server.register(plugins, function (err) {
 		if (err) {
@@ -39,18 +38,18 @@ var setup = function(done) {
 		}
 	});
 
-  // Add the server routes
-  server.route(routes);
-
-	// Redirect all http requests to https connection
+	// Redirect all http requests to https connection (not the very best solution due to possible MITM attack, recheck this)
 	server.select('http').route({
 		method: '*',
 		path: '/{p*}',
 		handler: function (request, reply) {
+			consle.log("HTTP REDIRECT TRIGGERED! URL PATH: " + request.url.path);
 			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
 		}
 	});
 
+  // Add the server routes
+  server.route(routes);
 };
 // Start the server
 	server.start((err) => {
