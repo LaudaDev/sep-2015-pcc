@@ -28,6 +28,7 @@ node_modules
 
 #Config
 src/config/config.json
+src/config/key/*.pem
 
 # Optional npm cache directory
 .npm

@@ -3,16 +3,29 @@
 
 var Hapi = require('hapi');
 var path = require('path');
+const fs = require('fs');
 var config = require('./src/config/config.json');
 var routes = require('./src/routes/routes.js');
 var plugins = require('./src/plugins/plugins.js');
 
+
 const server = new Hapi.Server();
 
 
-server.connection({ 
-	host: config.server.hostname, 
-	port: config.server.port
+server.connection({
+	host: config.server.hostname,
+	port: config.server.https_port,
+	tls: {
+		key: fs.readFileSync(path.join(__dirname, "src/config/key/key.pem"), 'utf8'),
+		cert: fs.readFileSync(path.join(__dirname, "src/config/key/cert.pem"), 'utf8')
+	},
+	labels: 'https'
+});
+
+server.connection({
+	host: config.server.hostname,
+	port: config.server.port,
+	labels: 'http'
 });
 
 // Export the server to be required elsewhere.
@@ -38,6 +51,5 @@ var setup = function(done) {
 			throw err;
 		}
 		setup(); // Run setup
-		console.log('Server running at:', server.info.uri);
+		console.log('Servers running at:', server.select('http').info.uri + " and " + server.select('https').info.uri);
 	});
-	
