@@ -26,9 +26,10 @@ build/Release
 # Dependency directory
 node_modules
 
-#Config
+# Config
 src/config/config.json
-src/config/key/*.pem
+src/config/key/*.key
+src/config/key/*.crt
 
 # Optional npm cache directory
 .npm
