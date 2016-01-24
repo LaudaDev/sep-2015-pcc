@@ -44,7 +44,7 @@ sep-pcc project is currently extended with the following plugins:
 
 ### JSON Message Format
 * INPUT
-```json
+```javascript
 {
   "pan": string,
   "securityCode": int,
@@ -57,7 +57,7 @@ sep-pcc project is currently extended with the following plugins:
 ```
 
 * OUTPUT
-```json
+```javascript
 {
   "pan": string,
   "securityCode": int,
