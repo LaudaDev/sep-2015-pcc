@@ -6,13 +6,15 @@ Uni Project 2015 - SEP Payment Card Center REST Service using Hapi & Sequalize f
   - Node.js (best to use latest stable)
 
 ### Version
-0.0.1
+0.0.2
 
 ### Installation
 
 You need [Node.JS] before starting this project!
-* Edit MySQL DB settings in index.js file for your own needs!
-* Edit server host & port if you need to! (Default: localhost:8000)
+* Rename config file located in src/config/config.json.sample to config.json
+* Edit server and MySQL settings located in config.json file.
+* Add key and certificate to src/config/key directory and edit their path in config.json file.
+* Follow the rest steps for building the project.
 
 ```sh
 $ git clone [git-repo-url] sep-pcc
@@ -21,38 +23,61 @@ $ git clone [git-repo-url] sep-pcc
 ```sh
 $ cd sep-pcc
 $ npm install
-$ npm install hapi
-$ node index.js
+$ node server
 ```
 To stop server from running press the following in the console window:
 ```sh
 $ CTRL + C
 ```
 
+To run test server for sending requests, do the following:
+```sh
+$ node issuer_server
+```
+
 ### Plugins
 
-sep-pcc is currently extended with the following plugins:
+sep-pcc project is currently extended with the following plugins:
 
-* Hapi & Sequalize as frameworks
-* Good & Good-console for logging
+* Hapi.JS & Sequelize.JS as frameworks
 * MySQL
-* inert for static web pages
 
 ### JSON Message Format
-- TODO
+* INPUT
+```json
+{
+  "pan": string,
+  "securityCode": int,
+  "cardHolderName": string,
+  "cardExpirationDate": string,
+  "acquirerOrderId": int,
+  "acquirerTimestamp": int,
+  "transactionAmount": float
+}
+```
+
+* OUTPUT
+```json
+{
+  "pan": string,
+  "securityCode": int,
+  "cardHolderName": string,
+  "cardExpirationDate": string,
+  "acquirerOrderId": int,
+  "acquirerTimestamp": int,
+  "transactionAmount": float,
+  "issuerOrderId": int,
+  "issuerTimestamp": int
+}
+```
 
 
-### Todos
+### Todo
 
- - Implement REST service following the known message format
- - Add tests
- - Add Code Comments
- - Cleanup
+ - Add input JSON object validation (optional)
+
 
 License
 ----
 
 MIT
-
-
-
