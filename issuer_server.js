@@ -9,7 +9,7 @@ const Good = require('good');
 const server = new Hapi.Server();
 server.connection({
 	host: 'localhost',
-	port: 8001
+	port: 8002
 });
 
 // Add the route (test)
@@ -45,7 +45,7 @@ server.register({
 }, (err) => {
 	if (err) {
 		throw err; // Failed loading "good" plugin!
-    }
+	}
 
 	// Start the server
 	server.start((err) => {

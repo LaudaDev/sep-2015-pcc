@@ -43,19 +43,19 @@ var setup = function() {
 		method: '*',
 		path: '/{p*}',
 		handler: function (request, reply) {
-			consle.log("HTTP REDIRECT TRIGGERED! URL PATH: " + request.url.path);
 			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
 		}
 	});
 
-  // Add the server routes
-  server.route(routes);
+	// Add the server routes
+	server.route(routes);
 };
+
 // Start the server
-	server.start((err) => {
-		if (err) {
-			throw err;
-		}
-		setup(); // Run setup
-		console.log('Servers running at:', server.select('http').info.uri + " and " + server.select('https').info.uri);
-	});
+server.start((err) => {
+	if (err) {
+		throw err;
+	}
+	setup(); // Run setup
+	console.log('Servers running at:', server.select('http').info.uri + " and " + server.select('https').info.uri);
+});

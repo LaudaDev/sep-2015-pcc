@@ -3,31 +3,23 @@
 var controllers = require('../controllers');
 
 module.exports = [
-	{ 
+	{
 		method: 'GET',
-		path:'/api/sep/hi', 
-		handler: controllers.pcc.hi
-	}, 
-	
-	{ 
-		method: 'GET',
-		path:'/hi', 
+		path:'/hi',
 		handler: function (request, reply) {
-		return reply('Hi! Testing! :)');
-		
+		return reply('{hi: "This is test!", work: "Maybe :)"}');
 		}
-	}, 
-	
-	{ 
+	},
+
+	{
 		method: 'GET',
-		path:'/api/sep/status', 
-		handler: controllers.pcc.status
-	}, 
-	
-	{ 
+		path:'/api/sep/log/{id}',
+		handler: controllers.pcc.issuerLog
+	},
+
+	{
 		method: 'POST',
-		path:'/api/sep/auth', 
+		path:'/api/sep/auth',
 		handler: controllers.pcc.auth
 	}
-
 ];

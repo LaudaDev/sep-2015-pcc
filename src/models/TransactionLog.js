@@ -1,4 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
+	// TransactionLog DB model based on db_install.sql data
 	var TransactionLog = sequelize.define('transaction_log',
 	{
 		acquirerOrderId: {
@@ -27,11 +28,11 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-    },
+	},
 	{
 		tableName: 'transaction_log',
 		timestamps: false
-		}
+	}
 	);
 
 	return TransactionLog;
