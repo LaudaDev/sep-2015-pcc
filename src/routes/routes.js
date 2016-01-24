@@ -13,7 +13,7 @@ module.exports = [
 
 	{
 		method: 'GET',
-		path:'/api/sep/log/{id}',
+		path:'/api/sep/log/{id?}',
 		handler: controllers.pcc.issuerLog
 	},
 

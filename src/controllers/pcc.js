@@ -1,10 +1,14 @@
 var models = require('../models');
 var request = require('request');
+var boom = require('boom');
 var Issuer = models.Issuer;
 var Log = models.TransactionLog;
 
 module.exports = {
 	issuerLog:function (request, reply) {
+		if (request.params.id == null || request.params.id === 'undefined')
+			return reply(boom.notFound('Invalid ID parameter sent'));
+
 		Log.findAll({
 			where: {
 				issuerId: request.params.id
@@ -15,6 +19,9 @@ module.exports = {
 	},
 
 	auth:function(req, reply) {
+		if (req.payload == null)
+			return reply(boom.notFound('Invalid request sent'));
+
 		var reqJson = JSON.parse(req.payload);
 		var issuerId = reqJson.pan.slice(0, 6); // get first 6 chars from pan to identify issuer
 
@@ -44,10 +51,10 @@ module.exports = {
 						});
 
 						// Return response to acquirer server with JSON dana sent from Issuer
-						reply(data);
+						return reply(data);
 				}
 				else {
-					reply('{error: "Invalid response from Issuer server!", code: ' + response.statusCode + '}');
+					return reply(boom.serverTimeout('Issuer server unavailable'));
 				}
 			});
 		})

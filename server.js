@@ -38,6 +38,9 @@ var setup = function() {
 		}
 	});
 
+	// Add the server routes
+	server.route(routes);
+
 	// Redirect all http requests to https connection (not the very best solution due to possible MITM attack, recheck this)
 	server.select('http').route({
 		method: '*',
@@ -46,9 +49,6 @@ var setup = function() {
 			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
 		}
 	});
-
-	// Add the server routes
-	server.route(routes);
 };
 
 // Start the server
