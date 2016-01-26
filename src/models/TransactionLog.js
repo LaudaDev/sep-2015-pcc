@@ -28,6 +28,14 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
+		statusCode: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		statusMessage: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
 	},
 	{
 		tableName: 'transaction_log',

@@ -20,7 +20,7 @@ server.route({
 		console.log("Received POST from " + request.payload);
 		var data = JSON.parse(request.payload);
 
-		data = JSON.stringify('{"pan": "1234567891111112", "securityCode": 123, "cardHolderName": "Goran Todorovic", "cardExpirationDate": "12.11.2016","acquirerOrderId": 1,"acquirerTimestamp": 1453491049,"transactionAmount": 24652.2,"issuerOrderId": 1, "issuerTimestamp": 1553491048}');
+		data = JSON.stringify('{"acquirerInfo": {"orderId": "1","timestamp": "25.01.2016 22:31:33"},"issuerInfo": {"id": "123456","orderId": "12","timestamp": "25.01.2016 22:31:36","transactionAmount": "5000.00"},"transactionStatus": {"code": "00","message": "TRANSACTION_COMPLETED"}}');
 
 		console.log(data);
 		reply(data);

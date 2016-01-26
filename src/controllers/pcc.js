@@ -1,30 +1,35 @@
 var models = require('../models');
 var request = require('request');
 var boom = require('boom');
+const server = require('../../server.js');
 var Issuer = models.Issuer;
 var Log = models.TransactionLog;
 
 module.exports = {
 	issuerLog:function (request, reply) {
 		if (request.params.id == null || request.params.id === 'undefined')
-			return reply(boom.notFound('Invalid ID parameter sent'));
+			return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
 
 		Log.findAll({
 			where: {
 				issuerId: request.params.id
 			}
 		}).then(function(data) {
-			reply(data);
+			return reply(data);
 		});
 	},
 
 	auth:function(req, reply) {
-		if (req.payload == null)
-			return reply(boom.notFound('Invalid request sent'));
+		// Check if we have a valid JSON data sent
+		try {
+			JSON.parse(req.payload);
+		}
+		catch (e) {
+			return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
+		}
 
 		var reqJson = JSON.parse(req.payload);
-		var issuerId = reqJson.pan.slice(0, 6); // get first 6 chars from pan to identify issuer
-
+		var issuerId = reqJson.cardInfo.pan.slice(0, 6); // Issuer ID (first 6 chars from PAN)
 		Issuer.findAll({
 			where: {
 				pan: issuerId
@@ -34,19 +39,23 @@ module.exports = {
 				url: data[0]['dataValues'].url + issuerId,
 				method: "POST",
 				json: JSON.stringify(req.payload)
-			}, function (error, response, data) {
+			},
+			function (error, response, data) {
+				console.log(data);
 				if (!error && response.statusCode === 200) {
 						var data = JSON.parse(data);
 
 						// Log transaction data between Acquirer and Issuer in case of errors or lost data!
 						Log.create({
-							acquirerOrderId: data.acquirerOrderId,
-							acquirerTimestamp: data.acquirerTimestamp,
-							transactionAmount: data.transactionAmount,
-							issuerId: issuerId,
-							issuerOrderId: data.issuerOrderId,
-							issuerTimestamp: data.issuerTimestamp
-						}).then(function(log){
+							acquirerOrderId: data.acquirerInfo.orderId,
+							acquirerTimestamp: data.acquirerInfo.timestamp,
+							transactionAmount: data.issuerInfo.transactionAmount,
+							issuerId: data.issuerInfo.id,
+							issuerOrderId: data.issuerInfo.orderId,
+							issuerTimestamp: data.issuerInfo.timestamp,
+							statusCode: data.transactionStatus.code,
+							statusMessage: data.transactionStatus.message
+						}).then(function(log) {
 							console.log("Transaction log data inserted with ID = " + log.get('id'));
 						});
 
@@ -54,7 +63,7 @@ module.exports = {
 						return reply(data);
 				}
 				else {
-					return reply(boom.serverTimeout('Issuer server unavailable'));
+					return reply(JSON.parse('{"transactionStatus":{"code": "05", "message": "SERVER_ERROR"}}'));
 				}
 			});
 		})

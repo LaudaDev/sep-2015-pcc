@@ -24,5 +24,7 @@ CREATE TABLE `transaction_log` (
 	`issuerId` int(10) NOT NULL,
 	`issuerOrderId` int(10) NOT NULL,
 	`issuerTimestamp` varchar(255) NOT NULL,
+	`statusCode` varchar(2) NOT NULL,
+	`statusMessage` varchar(100) NOT NULL,
 	PRIMARY KEY (`id`)
 );

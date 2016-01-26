@@ -8,7 +8,7 @@ var config = require('./src/config/config.json');
 var routes = require('./src/routes/routes.js');
 var plugins = require('./src/plugins/plugins.js');
 
-const server = new Hapi.Server();
+const server = new Hapi.Server({ load: { sampleInterval: 1000 } });
 
 server.connection({
 	host: config.server.hostname,
@@ -47,6 +47,16 @@ var setup = function() {
 		path: '/{p*}',
 		handler: function (request, reply) {
 			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
+		}
+	});
+
+	// Show server info on default route
+	server.route({
+		method: 'GET',
+		path: '/',
+		handler: function (request, reply) {
+			let uptime = Math.floor(Date.now()) - server.select('https').info.started;
+			reply(JSON.parse('{"status":"online","uptime":"'+uptime+'","load":"'+server.load.heapUsed+'","version":"'+server.version+'"}'))
 		}
 	});
 };
