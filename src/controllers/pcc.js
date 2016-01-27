@@ -43,9 +43,10 @@ module.exports = {
 				json: JSON.stringify(req.payload)
 			},
 			function (error, response, data) {
+				if (response.headers['content-type'].indexOf('json') === -1) {
+					return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
+				}
 				if (!error && response.statusCode === 200) {
-						var data = JSON.parse(data);
-
 						// Log transaction data between Acquirer and Issuer in case of errors or lost data!
 						Log.create({
 							acquirerOrderId: data.acquirerInfo.orderId,
