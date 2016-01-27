@@ -1,9 +1,11 @@
-var models = require('../models');
-var request = require('request');
-var boom = require('boom');
+'use strict'
+
+const models = require('../models');
+const request = require('request');
+const boom = require('boom');
 const server = require('../../server.js');
-var Issuer = models.Issuer;
-var Log = models.TransactionLog;
+const Issuer = models.Issuer;
+const Log = models.TransactionLog;
 
 module.exports = {
 	issuerLog:function (request, reply) {
@@ -41,7 +43,6 @@ module.exports = {
 				json: JSON.stringify(req.payload)
 			},
 			function (error, response, data) {
-				console.log(data);
 				if (!error && response.statusCode === 200) {
 						var data = JSON.parse(data);
 
@@ -49,8 +50,8 @@ module.exports = {
 						Log.create({
 							acquirerOrderId: data.acquirerInfo.orderId,
 							acquirerTimestamp: data.acquirerInfo.timestamp,
-							transactionAmount: data.issuerInfo.transactionAmount,
-							issuerId: data.issuerInfo.id,
+							transactionAmount: reqJson.transactionAmount,
+							issuerId: issuerId,
 							issuerOrderId: data.issuerInfo.orderId,
 							issuerTimestamp: data.issuerInfo.timestamp,
 							statusCode: data.transactionStatus.code,
