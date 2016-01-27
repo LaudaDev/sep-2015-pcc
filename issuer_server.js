@@ -17,9 +17,7 @@ server.route({
 	method: 'POST',
 	path:'/api/issuer/{id?}',
 	handler: function (request, reply) {
-		console.log("Received POST from " + request.payload);
-		let data = JSON.parse(request.payload);
-		data = JSON.stringify('{"acquirerInfo": {"orderId": "1","timestamp": "25.01.2016 22:31:33"},"issuerInfo": {"id": "123456","orderId": "12","timestamp": "25.01.2016 22:31:36","transactionAmount": "5000.00"},"transactionStatus": {"code": "00","message": "TRANSACTION_COMPLETED"}}');
+		var data = JSON.parse('{"acquirerInfo": {"orderId": "1","timestamp": "25.01.2016 22:31:33"},"issuerInfo": {"id": "123456","orderId": "12","timestamp": "25.01.2016 22:31:36","transactionAmount": "5000.00"},"transactionStatus": {"code": "00","message": "TRANSACTION_COMPLETED"}}');
 		console.log(data);
 		reply(data);
 	}
