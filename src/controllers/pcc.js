@@ -22,15 +22,14 @@ module.exports = {
 	},
 
 	auth:function(req, reply) {
-		// Check if we have a valid JSON data sent
-		try {
-			JSON.parse(req.payload);
+		var reqJson;
+		if (req.headers['content-type'].indexOf('json') === -1) {
+			reqJson = JSON.parse(req.payload);
 		}
-		catch (e) {
-			return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
+		else {
+			reqJson = req.payload;
 		}
 
-		var reqJson = JSON.parse(req.payload);
 		var issuerId = reqJson.cardInfo.pan.slice(0, 6); // Issuer ID (first 6 chars from PAN)
 		Issuer.findAll({
 			where: {
