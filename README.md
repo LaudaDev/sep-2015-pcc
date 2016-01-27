@@ -64,17 +64,15 @@ sep-pcc project is currently extended with the following plugins:
 ```
 
 * OUTPUT (Issuer -> PCC -> Acquirer -> Merchant)
-```javascript
+```json
 {
   "acquirerInfo": {
     "orderId": "int",
     "timestamp": "date (dd.MM.yyyy HH:mm:ss)"
   },
   "issuerInfo": {
-    "id": "int",
     "orderId": "int",
-    "timestamp": "date (dd.MM.yyyy HH:mm:ss)",
-    "transactionAmount": "BigDecimal"
+    "timestamp": "date (dd.MM.yyyy HH:mm:ss)"
   },
   "transactionStatus": {
     "code": "string",
@@ -82,15 +80,26 @@ sep-pcc project is currently extended with the following plugins:
   }
 }
 ```
+
+* OUTPUT (Issuer -> PCC -> Acquirer -> Merchant) IN CASE OF AN ERROR (Issuer not available, ect)
+```json
+{
+  "transactionStatus": {
+    "code": "string",
+    "message": "string"
+  }
+}
+```
+
 ### API ERROR CODES
 | CODE        | MESSAGE           | DESCRIPTION  |
 | :-------------: |:-------------:|:-----|
-| 00      | TRANSACTION_COMPLETED | Transaction completed successfully |
-| 01      |  CARD_AUTHENTICATION_FAILED     | Credit Card authentication failed (bad pan, ccv, date, ect) |
-| 02 |  CARD_INSUFFICIENT_FUNDS     | Transaction authorization failed (Not enough money, ect) |
-| 03 | NO_ISSUER    | Issuer bank was not found     |
+| 00 | TRANSACTION_COMPLETED | Transaction completed successfully |
+| 01 | CARD_AUTHENTICATION_FAILED | Credit Card authentication failed (bad pan, ccv, date, ect) |
+| 02 | CARD_INSUFFICIENT_FUNDS | Transaction authorization failed (Not enough money, ect) |
+| 03 | NO_ISSUER | Issuer bank was not found     |
 | 04 | REQUEST_FORMAT_ERROR | Bad JSON format    |
-| 05 | SERVER_ERROR      | Internal server error, server offline, ect |
+| 05 | SERVER_ERROR | Internal server error, server offline, ect |
 
 ### Todo
 
