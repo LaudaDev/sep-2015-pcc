@@ -1,8 +1,8 @@
-// TEST SERVER - ISSUER SIMULATOR
+// TEMPORARY TEST SERVER - ISSUER SIMULATOR
 
 'use strict'
 
-var Hapi = require('hapi');
+let Hapi = require('hapi');
 const Good = require('good');
 
 // Create a server with a host and port
@@ -12,21 +12,18 @@ server.connection({
 	port: 8002
 });
 
-// Add the route (test)
+// Add the route for response (test)
 server.route({
 	method: 'POST',
-	path:'/api/issuer/123456',
+	path:'/api/issuer/{id?}',
 	handler: function (request, reply) {
 		console.log("Received POST from " + request.payload);
-		var data = JSON.parse(request.payload);
-
+		let data = JSON.parse(request.payload);
 		data = JSON.stringify('{"acquirerInfo": {"orderId": "1","timestamp": "25.01.2016 22:31:33"},"issuerInfo": {"id": "123456","orderId": "12","timestamp": "25.01.2016 22:31:36","transactionAmount": "5000.00"},"transactionStatus": {"code": "00","message": "TRANSACTION_COMPLETED"}}');
-
 		console.log(data);
 		reply(data);
 	}
 });
-
 
 // Log
 server.register({
@@ -52,6 +49,6 @@ server.register({
 		if (err) {
 			throw err;
 		}
-		console.log('Issuer Server running at:', server.info.uri);
+		console.log('Issuer server running at:', server.info.uri);
 	});
 });
