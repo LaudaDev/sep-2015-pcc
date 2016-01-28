@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = function(sequelize, DataTypes) {
 	// Issuer DB model based on db_install.sql data
 	var Issuer = sequelize.define('issuer',

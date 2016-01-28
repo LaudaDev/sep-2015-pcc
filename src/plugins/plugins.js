@@ -1,4 +1,6 @@
-var config = require('../config/config.json');
+'use strict'
+
+const config = require('../config/config.json');
 
 module.exports = [
 	// Setting up 'good' to log everything!
@@ -19,6 +21,5 @@ module.exports = [
 		}
 	}
 
-  
-  // Add additional plugins here!
+// Add additional plugins here!
 ];

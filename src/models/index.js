@@ -1,27 +1,29 @@
-var Sequelize = require('sequelize');
-var config = require('../config/config.json');
+'use strict'
+
+const Sequelize = require('sequelize');
+const config = require('../config/config.json');
 
 // initialize database connection
 var sequelize = new Sequelize(config.db.mysql_db, config.db.mysql_user, config.db.mysql_pass, {
 	host: config.db.mysql_host,
 	port: config.db.mysql_port,
 	dialect: 'mysql',
-	  pool: {
+	pool: {
 		max: 5,
 		min: 0,
 		idle: 10000
-	  }
-	});
+	}
+});
 
-// load models
+// Load models
 var models = [
-  'Issuer',
-  'TransactionLog'
+	'Issuer',
+	'TransactionLog'
 ];
+
 models.forEach(function(model) {
   module.exports[model] = sequelize.import(__dirname + '/' + model);
 });
 
-// export connection
+// Export connection
 module.exports.sequelize = sequelize;
-

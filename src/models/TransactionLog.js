@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = function(sequelize, DataTypes) {
 	// TransactionLog DB model based on db_install.sql data
 	var TransactionLog = sequelize.define('transaction_log',

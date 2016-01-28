@@ -22,31 +22,31 @@ module.exports = {
 	},
 
 	auth:function(req, reply) {
-		var reqJson;
-		if (req.headers['content-type'].indexOf('json') === -1) {
-			reqJson = JSON.parse(req.payload);
-		}
-		else {
-			reqJson = req.payload;
-		}
+		// Get JSON request
+		var reqJson = (req.headers['content-type'].indexOf('json') === -1) ? JSON.parse(req.payload) : req.payload;
+		// Issuer ID (first 6 chars from PAN)
+		var issuerId = reqJson.cardInfo.pan.slice(0, 6);
 
-		var issuerId = reqJson.cardInfo.pan.slice(0, 6); // Issuer ID (first 6 chars from PAN)
+		// Query the DB to find issuer by his ID
 		Issuer.findAll({
 			where: {
 				pan: issuerId
 			}
 		}).then(function (data) {
+			// Send a request to Issuer
 			request({
 				url: data[0]['dataValues'].url + issuerId,
 				method: "POST",
 				json: JSON.stringify(req.payload)
 			},
+			// Process the response from Issuer
 			function (error, response, data) {
+				// Only JSON is accepted
 				if (response.headers['content-type'].indexOf('json') === -1) {
 					return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
 				}
 				if (!error && response.statusCode === 200) {
-						// Log transaction data between Acquirer and Issuer in case of errors or lost data!
+						// Log transaction data between Acquirer and Issuer in case of errors or lost data between Acquirer & Issuer.
 						Log.create({
 							acquirerOrderId: data.acquirerInfo.orderId,
 							acquirerTimestamp: data.acquirerInfo.timestamp,
@@ -64,6 +64,7 @@ module.exports = {
 						return reply(data);
 				}
 				else {
+					// In case Issuer's statusCode return other than 200, return error message to acquirer.
 					return reply(JSON.parse('{"transactionStatus":{"code": "05", "message": "SERVER_ERROR"}}'));
 				}
 			});

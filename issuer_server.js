@@ -1,5 +1,4 @@
 // TEMPORARY TEST SERVER - ISSUER SIMULATOR
-
 'use strict'
 
 let Hapi = require('hapi');

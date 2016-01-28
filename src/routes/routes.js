@@ -1,6 +1,7 @@
 // SEP-PCC REST ROUTES
+'use strict'
 
-var controllers = require('../controllers');
+const controllers = require('../controllers');
 
 module.exports = [
 	{
