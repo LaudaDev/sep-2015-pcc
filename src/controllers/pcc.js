@@ -41,6 +41,10 @@ module.exports = {
 			},
 			// Process the response from Issuer
 			function (error, response, data) {
+				// Check if issuer sent any response
+				if (typeof response === 'undefined') {
+					return reply(JSON.parse('{"transactionStatus":{"code": "05", "message": "SERVER_ERROR"}}'));
+				}
 				// Only JSON is accepted
 				if (response.headers['content-type'].indexOf('json') === -1) {
 					return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
