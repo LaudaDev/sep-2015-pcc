@@ -1,12 +1,12 @@
 # SEP-PCC
 
-Uni Project 2015 - SEP Payment Card Center REST Service using Hapi & Sequalize frameworks.
+Uni Project 2015 - SEP Payment Card Center REST Service using HapiJS & SequalizeJS frameworks.
 
 ## Requirments
-  - Node.js (best to use latest stable)
+  - Node.JS (best to use latest stable)
 
 ### Version
-0.0.2
+0.0.3
 
 ### Installation
 
@@ -103,7 +103,11 @@ sep-pcc project is currently extended with the following plugins:
 
 ### Todo
 
- - Add input JSON object validation (optional)
+ - Nothing :)
+
+### Note
+
+- In case you don't have a valid SSL certificate and in case you have generated your own self-signed (openssl, ect) certificate, you will have to accept a security exception in your browser for this app to work.
 
 
 License
