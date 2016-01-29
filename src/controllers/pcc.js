@@ -1,17 +1,15 @@
+// SEP-PCC MAIN CONTROLLERS
+
 'use strict'
 
 const models = require('../models');
 const request = require('request');
 const boom = require('boom');
-const server = require('../../server.js');
 const Issuer = models.Issuer;
 const Log = models.TransactionLog;
 
 module.exports = {
-	issuerLog:function (request, reply) {
-		if (request.params.id == null || request.params.id === 'undefined')
-			return reply(JSON.parse('{"transactionStatus":{"code": "04", "message": "REQUEST_FORMAT_ERROR"}}'));
-
+	issuerLog:function(request, reply) {
 		Log.findAll({
 			where: {
 				issuerId: request.params.id
@@ -24,6 +22,7 @@ module.exports = {
 	auth:function(req, reply) {
 		// Get JSON request
 		var reqJson = (req.headers['content-type'].indexOf('json') === -1) ? JSON.parse(req.payload) : req.payload;
+
 		// Issuer ID (first 6 chars from PAN)
 		var issuerId = reqJson.cardInfo.pan.slice(0, 6);
 
@@ -32,7 +31,7 @@ module.exports = {
 			where: {
 				pan: issuerId
 			}
-		}).then(function (data) {
+		}).then((data) => {
 			// Send a request to Issuer
 			request({
 				url: data[0]['dataValues'].url + issuerId,
@@ -60,7 +59,7 @@ module.exports = {
 							issuerTimestamp: data.issuerInfo.timestamp,
 							statusCode: data.transactionStatus.code,
 							statusMessage: data.transactionStatus.message
-						}).then(function(log) {
+						}).then((log) => {
 							console.log("Transaction log data inserted with ID = " + log.get('id'));
 						});
 

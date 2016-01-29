@@ -26,9 +26,6 @@ server.connection({
 	labels: 'http'
 });
 
-// Export the server to be required elsewhere.
-module.exports = server;
-
 // Main setup
 var setup = function() {
 	// Register all plugins
@@ -45,7 +42,7 @@ var setup = function() {
 	server.select('http').route({
 		method: '*',
 		path: '/{p*}',
-		handler: function (request, reply) {
+		handler: function(request, reply) {
 			return reply().redirect('https://' + config.server.hostname + ":" + config.server.https_port + request.url.path).permanent();
 		}
 	});
@@ -54,7 +51,7 @@ var setup = function() {
 	server.route({
 		method: 'GET',
 		path: '/',
-		handler: function (request, reply) {
+		handler: function(request, reply) {
 			let uptime = Math.floor(Date.now()) - server.select('https').info.started;
 			reply(JSON.parse('{"status":"online","uptime":"'+uptime+'","load":"'+server.load.heapUsed+'","version":"'+server.version+'"}'))
 		}

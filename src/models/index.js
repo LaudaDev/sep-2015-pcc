@@ -21,8 +21,8 @@ var models = [
 	'TransactionLog'
 ];
 
-models.forEach(function(model) {
-  module.exports[model] = sequelize.import(__dirname + '/' + model);
+models.forEach((model) => {
+	module.exports[model] = sequelize.import(__dirname + '/' + model);
 });
 
 // Export connection
