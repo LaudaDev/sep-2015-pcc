@@ -41,7 +41,7 @@ module.exports = [
 						expirationDate: joi.string().required()
 					}).required(),
 					acquirerInfo: joi.object({
-						orderId: joi.string().alphanum().required(),
+						orderId: joi.number().integer().required(),
 						timestamp: joi.string().required()
 					}).required(),
 					transactionAmount: joi.number().required()
