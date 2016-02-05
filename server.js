@@ -7,15 +7,17 @@ const fs = require('fs');
 var config = require('./src/config/config.json');
 var routes = require('./src/routes/routes.js');
 var plugins = require('./src/plugins/plugins.js');
-
 const server = new Hapi.Server({ load: { sampleInterval: 1000 } });
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Disable if you want to reject unauthorized certs.
 
 server.connection({
 	host: config.server.hostname,
 	port: config.server.https_port,
 	tls: {
 		key: fs.readFileSync(path.join(__dirname, config.https.key), 'utf8'),
-		cert: fs.readFileSync(path.join(__dirname, config.https.cert), 'utf8')
+		cert: fs.readFileSync(path.join(__dirname, config.https.cert), 'utf8'),
+		rejectUnauthorized: false
 	},
 	labels: 'https'
 });

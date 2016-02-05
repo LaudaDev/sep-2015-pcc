@@ -34,9 +34,9 @@ module.exports = {
 		}).then((data) => {
 			// Send a request to Issuer
 			request({
-				url: data[0]['dataValues'].url + issuerId,
+				url: data[0]['dataValues'].url,
 				method: "POST",
-				json: JSON.stringify(req.payload)
+				json: reqJson
 			},
 			// Process the response from Issuer
 			function (error, response, data) {
@@ -51,12 +51,12 @@ module.exports = {
 				if (!error && response.statusCode === 200) {
 						// Log transaction data between Acquirer and Issuer in case of errors or lost data between Acquirer & Issuer.
 						Log.create({
-							acquirerOrderId: data.acquirerInfo.orderId,
-							acquirerTimestamp: data.acquirerInfo.timestamp,
+							acquirerOrderId: reqJson.acquirerInfo.orderId,
+							acquirerTimestamp: reqJson.acquirerInfo.timestamp,
 							transactionAmount: reqJson.transactionAmount,
 							issuerId: issuerId,
-							issuerOrderId: data.issuerInfo.orderId,
-							issuerTimestamp: data.issuerInfo.timestamp,
+							issuerOrderId: (data.transactionStatus.code === '00') ? data.issuerInfo.orderId : -1,
+							issuerTimestamp: (data.transactionStatus.code === '00') ? data.issuerInfo.timestamp : -1,
 							statusCode: data.transactionStatus.code,
 							statusMessage: data.transactionStatus.message
 						}).then((log) => {
